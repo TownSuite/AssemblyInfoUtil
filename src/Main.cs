@@ -4,6 +4,15 @@ using System.Text;
 
 namespace AssemblyInfoUtil
 {
+
+	enum FileType
+	{
+		cs=1,
+		vb=2,
+		csproj=3,
+		vbproj=4		
+	}
+
 	/// <summary>
 	/// Summary description for Class1.
 	/// </summary>
@@ -15,7 +24,7 @@ namespace AssemblyInfoUtil
 		
 		private static string versionStr = null;
 
-		private static bool isVB = false;
+		private static FileType theType =  FileType.cs;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -36,7 +45,11 @@ namespace AssemblyInfoUtil
 			}
 
 			if (Path.GetExtension(fileName).ToLower() == ".vb")
-				isVB = true;
+				theType =  FileType.vb;
+			else if (Path.GetExtension(fileName).ToLower() == ".vbproj")
+				theType = FileType.vbproj;
+			else if (Path.GetExtension(fileName).ToLower() == ".csproj")
+				theType = FileType.csproj;
 
 			if (fileName == "") {
 				System.Console.WriteLine("Usage: AssemblyInfoUtil <path to AssemblyInfo.cs or AssemblyInfo.vb file> [options]");
@@ -70,13 +83,19 @@ namespace AssemblyInfoUtil
 
 
 		private static string ProcessLine(string line) {
-			if (isVB) {
+			if (theType == FileType.vb) {
 				line = ProcessLinePart(line, "<Assembly: AssemblyVersion(\"");
 				line = ProcessLinePart(line, "<Assembly: AssemblyFileVersion(\"");
 			} 
-			else {
+			else if (theType == FileType.cs) {
 				line = ProcessLinePart(line, "[assembly: AssemblyVersion(\"");
 				line = ProcessLinePart(line, "[assembly: AssemblyFileVersion(\"");
+			}
+			else if (theType == FileType.csproj || theType == FileType.vbproj)
+			{
+				line = ProcessLinePart(line, "<Version>");
+				line = ProcessLinePart(line, "<AssemblyVersion>");
+				line = ProcessLinePart(line, "<FileVersion>");
 			}
 			return line;
 		}
@@ -86,6 +105,10 @@ namespace AssemblyInfoUtil
 			if (spos >= 0) {
 				spos += part.Length;
 				int epos = line.IndexOf('"', spos);
+				if(epos == -1)
+				{
+					epos = line.IndexOf('<', spos);
+				}
 				string oldVersion = line.Substring(spos, epos - spos);
 				string newVersion = "";
 				bool performChange = false;
