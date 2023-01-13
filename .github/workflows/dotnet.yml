@@ -41,8 +41,8 @@ jobs:
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
-      - name: Publish
-        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true
+      - name: Publish net6.0 singlefile
+        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net6.0
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
