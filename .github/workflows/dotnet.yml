@@ -48,8 +48,7 @@ jobs:
         with:
           name: win-x64
           path: |
-            src/bin/Release/net6.0/win-x64
-            src/bin/Release/net48
+            src/bin/Release
           retention-days: 1
 
   mac-build:
