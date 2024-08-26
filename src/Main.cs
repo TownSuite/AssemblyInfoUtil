@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace AssemblyInfoUtil
+namespace TownSuite.AssemblyInfoUtil
 {
 
 	enum FileType

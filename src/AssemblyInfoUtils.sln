@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyInfoUtil", "AssemblyInfoUtil.csproj", "{E8E41672-DC17-4F3F-B0DF-BCD775B1A8A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TownSuite.AssemblyInfoUtil", "TownSuite.AssemblyInfoUtil.csproj", "{E8E41672-DC17-4F3F-B0DF-BCD775B1A8A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
