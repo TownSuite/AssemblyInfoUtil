@@ -14,37 +14,37 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
       - name: Restore dependencies
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
       - name: Publish
-        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r linux-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true
+        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r linux-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux-x64
           path: |
-            src/bin/Release/net6.0/linux-x64
+            src/bin/Release/net8.0/linux-x64
           retention-days: 1
 
   windows-build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
       - name: Restore dependencies
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
-      - name: Publish net6.0 singlefile
-        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net6.0
+      - name: Publish net8.0 singlefile
+        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: win-x64
           path: |
@@ -54,21 +54,21 @@ jobs:
   mac-build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
       - name: Restore dependencies
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
       - name: Publish
-        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r osx-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true
+        run: cd src && dotnet publish AssemblyInfoUtil.csproj -c Release -r osx-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: osx-x64
           path: |
-            src/bin/Release/net6.0/osx-x64
+            src/bin/Release/net8.0/osx-x64
           retention-days: 1
