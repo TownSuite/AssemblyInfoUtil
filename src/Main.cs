@@ -48,7 +48,7 @@ namespace TownSuite.AssemblyInfoUtil
 				theType =  FileType.vb;
 			else if (Path.GetExtension(fileName).ToLower() == ".vbproj")
 				theType = FileType.vbproj;
-			else if (Path.GetExtension(fileName).ToLower() == ".csproj")
+			else if (Path.GetExtension(fileName).ToLower() == ".csproj" || Path.GetExtension(fileName).ToLower() == ".props")
 				theType = FileType.csproj;
 
 			if (fileName == "") {
