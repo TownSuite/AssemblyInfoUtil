@@ -11,6 +11,7 @@ Can increment numbers the following file types.
 * AssemblyInfo.cs
 * .csproj
 * .vbproj
+* .props
 
 
 # Example
