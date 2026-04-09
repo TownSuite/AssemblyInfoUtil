@@ -76,18 +76,22 @@ namespace TownSuite.AssemblyInfoUtil
             }
 
             System.Console.Write("Processing \"" + fileName + "\"...");
-            using StreamReader reader = new StreamReader(fileName);
-            StreamWriter writer = new StreamWriter(fileName + ".out");
-            String line;
-
-            while ((line = reader.ReadLine()) != null)
+            using (StreamReader reader = new StreamReader(fileName))
             {
-                line = ProcessLine(line);
-                writer.WriteLine(line);
-            }
+                using (StreamWriter writer = new StreamWriter(fileName + ".out"))
+                {
+                    String line;
 
-            reader.Close();
-            writer.Close();
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        line = ProcessLine(line);
+                        writer.WriteLine(line);
+                    }
+
+                    reader.Close();
+                    writer.Close();
+                }
+            }
 
             File.Delete(fileName);
             File.Move(fileName + ".out", fileName);
