@@ -3,17 +3,14 @@ $ErrorActionPreference = "Stop"
 $CURRENTPATH = $pwd.Path
 
 function GetVersions([ref]$theVersion, [ref]$path) {	
-	# Read the content of the file and find the line containing <Version>
-	$versionLine = Get-Content -Path $path.Value | Select-String -Pattern "<Version>"
+    $xml = [xml](Get-Content $path.Value)
+    $Version=$xml.Project.PropertyGroup.Version
+    
+    if ($Version -eq $null) {
+        throw "Version not found in csproj file"
+    }
 
-	# Extract the version number using a regular expression
-	if ($versionLine -match "<Version>([0-9.]+)</Version>") {
-		$VERSION = $matches[1]
-	} else {
-		Write-Error "Version tag not found in the file."
-	}
-
-    $theVersion.Value = $VERSION
+    $theVersion.Value = $Version
 }
 
 New-Item -Path "$CURRENTPATH/build" -ItemType Directory -Force
