@@ -9,7 +9,8 @@ namespace TownSuite.AssemblyInfoUtil
         cs = 1,
         vb = 2,
         csproj = 3,
-        vbproj = 4
+        vbproj = 4,
+        nuspec = 5
     }
 
     /// <summary>
@@ -53,11 +54,13 @@ namespace TownSuite.AssemblyInfoUtil
             else if (Path.GetExtension(fileName).ToLower() == ".csproj" ||
                      Path.GetExtension(fileName).ToLower() == ".props")
                 theType = FileType.csproj;
+            else if (Path.GetExtension(fileName).ToLower() == ".nuspec")
+                theType = FileType.nuspec;
 
             if (fileName == "")
             {
                 System.Console.WriteLine(
-                    "Usage: AssemblyInfoUtil <path to AssemblyInfo.cs or AssemblyInfo.vb file> [options]");
+                    "Usage: AssemblyInfoUtil <path to AssemblyInfo.cs/.vb/.csproj/.vbproj/.nuspec file> [options]");
                 System.Console.WriteLine("Options: ");
                 System.Console.WriteLine(
                     "  -set:<new version number> - set new version number (in NN.NN.NN.NN format)");
@@ -109,6 +112,10 @@ namespace TownSuite.AssemblyInfoUtil
                 line = ProcessLinePart(line, "<Version>");
                 line = ProcessLinePart(line, "<AssemblyVersion>");
                 line = ProcessLinePart(line, "<FileVersion>");
+            }
+            else if (theType == FileType.nuspec)
+            {
+                line = ProcessLinePart(line, "<version>");
             }
 
             return line;
