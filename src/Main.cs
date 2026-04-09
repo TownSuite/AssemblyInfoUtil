@@ -76,7 +76,7 @@ namespace TownSuite.AssemblyInfoUtil
             }
 
             System.Console.Write("Processing \"" + fileName + "\"...");
-            StreamReader reader = new StreamReader(fileName);
+            using StreamReader reader = new StreamReader(fileName);
             StreamWriter writer = new StreamWriter(fileName + ".out");
             String line;
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">net48;net6.0;net8.0</TargetFrameworks>
-	<TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">net48;net8.0;net10.0</TargetFrameworks>
+	<TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">net8.0;net10.0</TargetFrameworks>
     <ApplicationIcon>App.ico</ApplicationIcon>
     <OutputType>Exe</OutputType>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -10,14 +10,12 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>assemblyinfoutil</ToolCommandName>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TownSuite/AssemblyInfoUtil</PackageProjectUrl>
-    <Description>A CLI tool to increment or set version numbers in .vb, .cs, .vbproj, or .csproj files.</Description>
+    <Description>A CLI tool to increment or set version numbers in .vb, .cs, .vbproj, or .csproj, .props, .nuspec files.</Description>
     <Authors>TownSuite</Authors>
     <RepositoryUrl>https://github.com/TownSuite/AssemblyInfoUtil</RepositoryUrl>
     <PackageLicenseExpression>CPOL</PackageLicenseExpression>
-    
   </PropertyGroup>
   <ItemGroup>
     <Reference Update="System">
