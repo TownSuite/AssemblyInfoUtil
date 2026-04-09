@@ -20,106 +20,108 @@ pipeline {
         }
         stage('Pipeline') {
             stages {
-                parallel(
-                    'Windows Path': {
-                        stages {
+                stage('Parallel Paths') {
+                    parallel {
+                        stage('Windows Path') {
                             agent { label townsuite_automation2.get_windows_label() }
-                            stage('Environment Setup') {
-                                steps {
-                                    script {
-                                        townsuite.common_environment_configuration()
-                                        townsuite.checkout_scm()
+                            stages {
+                                stage('Environment Setup') {
+                                    steps {
+                                        script {
+                                            townsuite.common_environment_configuration()
+                                            townsuite.checkout_scm()
+                                        }
                                     }
                                 }
-                            }
-                            stage('Build') {
-                                steps {
-                                    pwsh '''
-                                    .\\build_windows.ps1
-                                    '''
-                                }
-                            }
-                            stage('Code Sign') {
-                                when {
-                                    expression { return env.BRANCH_NAME.startsWith('PR-') == false }
-                                }
-                                steps {
-                                    echo 'Code Signing happening here....'
-                                    script {
-                                        townsuite.codesign "${env.WORKSPACE}\\build", '*TownSuite*.dll;*TownSuite*.exe', false
+                                stage('Build') {
+                                    steps {
+                                        pwsh '''
+                                        .\\build_windows.ps1
+                                        '''
                                     }
                                 }
-                            }
-                            stage('Zip') {
-                                steps {
-                                    pwsh '''
-                                    .\\build_zip.ps1
-                                    '''
-                                }
-                            }
-                            stage('Code Sign Detached') {
-                                when {
-                                    expression { return env.BRANCH_NAME.startsWith('PR-') == false }
-                                }
-                                steps {
-                                    echo 'Code Signing happening here....'
-                                    script {
-                                        townsuite.codesign "${env.WORKSPACE}/build", '*.zip', true
+                                stage('Code Sign') {
+                                    when {
+                                        expression { return env.BRANCH_NAME.startsWith('PR-') == false }
+                                    }
+                                    steps {
+                                        echo 'Code Signing happening here....'
+                                        script {
+                                            townsuite.codesign "${env.WORKSPACE}\\build", '*TownSuite*.dll;*TownSuite*.exe', false
+                                        }
                                     }
                                 }
-                            }
-                            stage('Archive') {
-                                steps {
-                                    echo 'archiving artifacts'
-                                    script {
-                                        townsuite.archiveWithRetryAndLock('build/*.zip,build/*.SHA256SUMS,build/*.sig', 3)
+                                stage('Zip') {
+                                    steps {
+                                        pwsh '''
+                                        .\\build_zip.ps1
+                                        '''
+                                    }
+                                }
+                                stage('Code Sign Detached') {
+                                    when {
+                                        expression { return env.BRANCH_NAME.startsWith('PR-') == false }
+                                    }
+                                    steps {
+                                        echo 'Code Signing happening here....'
+                                        script {
+                                            townsuite.codesign "${env.WORKSPACE}/build", '*.zip', true
+                                        }
+                                    }
+                                }
+                                stage('Archive') {
+                                    steps {
+                                        echo 'archiving artifacts'
+                                        script {
+                                            townsuite.archiveWithRetryAndLock('build/*.zip,build/*.SHA256SUMS,build/*.sig', 3)
+                                        }
                                     }
                                 }
                             }
                         }
-                    },
-                    'Linux Path': {
-                        stages {
+                        stage('Linux Path') {
                             agent { label townsuite_automation2.get_ubuntu_label() }
-                            stage('Environment Setup') {
-                                steps {
-                                    script {
-                                        townsuite.common_environment_configuration()
-                                        townsuite.checkout_scm()
+                            stages {
+                                stage('Environment Setup') {
+                                    steps {
+                                        script {
+                                            townsuite.common_environment_configuration()
+                                            townsuite.checkout_scm()
+                                        }
                                     }
                                 }
-                            }
-                            stage('Build') {
-                                steps {
-                                    pwsh '''
-                                    .\\build.ps1
-                                    .\\build_linux.ps1
-                                    .\\build_zip.ps1
-                                    '''
-                                }
-                            }
-                            stage('Code Sign Detached') {
-                                when {
-                                    expression { return env.BRANCH_NAME.startsWith('PR-') == false }
-                                }
-                                steps {
-                                    echo 'Code Signing happening here....'
-                                    script {
-                                        townsuite.codesign "${env.WORKSPACE}/build", 'TownSuite*;*.zip', true
+                                stage('Build') {
+                                    steps {
+                                        pwsh '''
+                                        .\\build.ps1
+                                        .\\build_linux.ps1
+                                        .\\build_zip.ps1
+                                        '''
                                     }
                                 }
-                            }
-                            stage('Archive') {
-                                steps {
-                                    echo 'archiving artifacts'
-                                    script {
-                                        townsuite.archiveWithRetryAndLock('build/*.zip,build/*.SHA256SUMS,build/*.sig,build/*.txt', 3)
+                                stage('Code Sign Detached') {
+                                    when {
+                                        expression { return env.BRANCH_NAME.startsWith('PR-') == false }
+                                    }
+                                    steps {
+                                        echo 'Code Signing happening here....'
+                                        script {
+                                            townsuite.codesign "${env.WORKSPACE}/build", 'TownSuite*;*.zip', true
+                                        }
+                                    }
+                                }
+                                stage('Archive') {
+                                    steps {
+                                        echo 'archiving artifacts'
+                                        script {
+                                            townsuite.archiveWithRetryAndLock('build/*.zip,build/*.SHA256SUMS,build/*.sig,build/*.txt', 3)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                )
+                }
             }
         }
     }
