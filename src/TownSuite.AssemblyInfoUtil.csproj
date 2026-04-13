@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">net48;net8.0;net10.0</TargetFrameworks>
-	<TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">net8.0;net10.0</TargetFrameworks>
+	<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <ApplicationIcon>App.ico</ApplicationIcon>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
