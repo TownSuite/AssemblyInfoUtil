@@ -71,7 +71,8 @@ namespace TownSuite.AssemblyInfoUtil
                     "  -set:<new version number> - set new version number (in NN.NN.NN.NN format)");
                 System.Console.WriteLine(
                     "  -inc:<parameter index>  - increases the parameter with specified index (can be from 1 to 4)");
-                System.Console.WriteLine("--keep-assembly-version - do not change AssemblyVersion attribute in AssemblyInfo.cs or .vb files");
+                System.Console.WriteLine(
+                    "--keep-assembly-version - do not change AssemblyVersion attribute in AssemblyInfo.cs or .vb files");
                 return;
             }
 
