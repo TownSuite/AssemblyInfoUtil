@@ -25,6 +25,7 @@ namespace TownSuite.AssemblyInfoUtil
         private static string versionStr = null;
 
         private static FileType theType = FileType.cs;
+        private static bool keepAssemblyVersion = false;
 
         /// <summary>
         /// The main entry point for the application.
@@ -42,6 +43,10 @@ namespace TownSuite.AssemblyInfoUtil
                 else if (args[i].StartsWith("-set:"))
                 {
                     versionStr = args[i].Substring("-set:".Length);
+                }
+                else if (args[i].StartsWith("--keep-assembly-version"))
+                {
+                    keepAssemblyVersion = true;
                 }
                 else
                     fileName = args[i];
@@ -66,6 +71,7 @@ namespace TownSuite.AssemblyInfoUtil
                     "  -set:<new version number> - set new version number (in NN.NN.NN.NN format)");
                 System.Console.WriteLine(
                     "  -inc:<parameter index>  - increases the parameter with specified index (can be from 1 to 4)");
+                System.Console.WriteLine("--keep-assembly-version - do not change AssemblyVersion attribute in AssemblyInfo.cs or .vb files");
                 return;
             }
 
@@ -103,18 +109,30 @@ namespace TownSuite.AssemblyInfoUtil
         {
             if (theType == FileType.vb)
             {
-                line = ProcessLinePart(line, "<Assembly: AssemblyVersion(\"");
+                if (!keepAssemblyVersion)
+                {
+                    line = ProcessLinePart(line, "<Assembly: AssemblyVersion(\"");
+                }
+
                 line = ProcessLinePart(line, "<Assembly: AssemblyFileVersion(\"");
             }
             else if (theType == FileType.cs)
             {
-                line = ProcessLinePart(line, "[assembly: AssemblyVersion(\"");
+                if (!keepAssemblyVersion)
+                {
+                    line = ProcessLinePart(line, "[assembly: AssemblyVersion(\"");
+                }
+
                 line = ProcessLinePart(line, "[assembly: AssemblyFileVersion(\"");
             }
             else if (theType == FileType.csproj || theType == FileType.vbproj)
             {
                 line = ProcessLinePart(line, "<Version>");
-                line = ProcessLinePart(line, "<AssemblyVersion>");
+                if (!keepAssemblyVersion)
+                {
+                    line = ProcessLinePart(line, "<AssemblyVersion>");
+                }
+
                 line = ProcessLinePart(line, "<FileVersion>");
             }
             else if (theType == FileType.nuspec)
