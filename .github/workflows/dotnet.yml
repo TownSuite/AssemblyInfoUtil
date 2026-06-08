@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
       - name: Publish linux-x64
-        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r linux-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.Linux.x64
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r linux-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net10.0 -o build/TownSuite.AssemblyInfoUtils.Linux.x64
       - name: Archive artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
         with:
@@ -44,7 +44,7 @@ jobs:
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
       - name: Publish linux-arm64
-        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r linux-arm64 -p:PublishReadyToRun=false --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.Linux.arm64
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r linux-arm64 -p:PublishReadyToRun=false --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net10.0 -o build/TownSuite.AssemblyInfoUtils.Linux.arm64
       - name: Archive artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
         with:
@@ -66,8 +66,8 @@ jobs:
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
-      - name: Publish win-x64 net8.0
-        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.Windows
+      - name: Publish win-x64 net10.0
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net10.0 -o build/TownSuite.AssemblyInfoUtils.Windows
       - name: Publish net48
         run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -f:net48 -o build/TownSuite.AssemblyInfoUtils.Windows.net48
       - name: Archive win-x64 artifacts
@@ -96,7 +96,7 @@ jobs:
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
       - name: Publish osx-x64
-        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r osx-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.macOS
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r osx-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net10.0 -o build/TownSuite.AssemblyInfoUtils.macOS
       - name: Archive artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
         with:
