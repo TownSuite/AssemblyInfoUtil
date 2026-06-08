@@ -17,19 +17,39 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7  # v5.2.0
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Restore dependencies
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
-      - name: Publish
-        run: cd src && dotnet publish TownSuite.AssemblyInfoUtil.csproj -c Release -r linux-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0
+      - name: Publish linux-x64
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r linux-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.Linux.x64
       - name: Archive artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
         with:
           name: linux-x64
-          path: |
-            src/bin/Release/net8.0/linux-x64
+          path: build/TownSuite.AssemblyInfoUtils.Linux.x64
+          retention-days: 1
+
+  linux-arm64-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7  # v5.2.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore dependencies
+        run: cd src && dotnet restore AssemblyInfoUtils.sln
+      - name: Build
+        run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
+      - name: Publish linux-arm64
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r linux-arm64 -p:PublishReadyToRun=false --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.Linux.arm64
+      - name: Archive artifacts
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
+        with:
+          name: linux-arm64
+          path: build/TownSuite.AssemblyInfoUtils.Linux.arm64
           retention-days: 1
 
   windows-build:
@@ -39,28 +59,28 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7  # v5.2.0
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57  # v3.0.0
       - name: Restore dependencies
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
-      - name: Publish net8.0 singlefile
-        run: cd src && dotnet publish TownSuite.AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0
-      - name: Archive artifacts
+      - name: Publish win-x64 net8.0
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r win-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.Windows
+      - name: Publish net48
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -f:net48 -o build/TownSuite.AssemblyInfoUtils.Windows.net48
+      - name: Archive win-x64 artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
         with:
           name: win-x64
-          path: |
-            src/bin/Release
+          path: build/TownSuite.AssemblyInfoUtils.Windows
           retention-days: 1
       - name: Archive net48 artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
         with:
           name: win-x64-net48
-          path: |
-            src/bin/Release/net48
+          path: build/TownSuite.AssemblyInfoUtils.Windows.net48
           retention-days: 1
 
   mac-build:
@@ -70,17 +90,16 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7  # v5.2.0
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Restore dependencies
         run: cd src && dotnet restore AssemblyInfoUtils.sln
       - name: Build
         run: cd src && dotnet build AssemblyInfoUtils.sln --no-restore
-      - name: Publish
-        run: cd src && dotnet publish TownSuite.AssemblyInfoUtil.csproj -c Release -r osx-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0
+      - name: Publish osx-x64
+        run: dotnet publish src/TownSuite.AssemblyInfoUtil.csproj -c Release -r osx-x64 -p:PublishReadyToRun=true --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -f:net8.0 -o build/TownSuite.AssemblyInfoUtils.macOS
       - name: Archive artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
         with:
           name: osx-x64
-          path: |
-            src/bin/Release/net8.0/osx-x64
+          path: build/TownSuite.AssemblyInfoUtils.macOS
           retention-days: 1
