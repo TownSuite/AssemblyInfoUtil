@@ -106,7 +106,7 @@ jobs:
           dotnet-version: 10.0.x
       - name: Get version
         run: |
-          VERSION=$(grep -oP '(?<=<Version>)[^<]+' src/TownSuite.AssemblyInfoUtil.csproj)
+          VERSION=$(sed -n 's/.*<Version>\([^<]*\)<\/Version>.*/\1/p' src/TownSuite.AssemblyInfoUtil.csproj)
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
       - name: Restore dependencies
         run: cd src && dotnet restore AssemblyInfoUtils.sln
